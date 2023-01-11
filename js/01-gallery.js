@@ -27,16 +27,26 @@ gallery.insertAdjacentHTML('afterbegin', galleryList)
 
 function onGalleryItemClick(event) {
   event.preventDefault();  
+  
   const isGalleryImage = event.target.classList.contains('gallery__image')
   if (!isGalleryImage) {
     return;
   } 
+  
   const src = event.target.dataset.source;
-  const instance = basicLightbox.create(`
+      const instance = basicLightbox.create(`
     <img src=${src} width="800" height="600">
   `)
-  instance.show()
-  }
-
+  instance.show(onPressEsc());
   
-
+  function onPressEsc() {
+  window.addEventListener('keydown', pressEsc);
+}
+  
+  function pressEsc(event) {
+    if (event.code === "Escape") {
+      window.removeEventListener('keydown', pressEsc);
+      instance.close();
+  }    
+  }
+  }
